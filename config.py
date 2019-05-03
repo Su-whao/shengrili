@@ -5,10 +5,10 @@ from datetime import timedelta
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = ''
-HOST = ''
+PASSWORD = 'wanghao'
+HOST = 'localhost'
 PORT = '3306'
-DATABASE = ''
+DATABASE = 'shengrili'
 
 SQLALCHEMY_DATABASE_URI = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(DIALECT, DRIVER, USERNAME, PASSWORD, HOST, PORT, DATABASE)
 
