@@ -1,25 +1,45 @@
 from flask import request, jsonify
 from models import User, Birthday
 from db import db
+from lib.modelFunc import modelFunc
 import requests
 
-def getUser():
-    openid = request.args.get('openid')
+def getUser(openid):
     user = User.query.filter(User.openid == openid).first()
+    user = modelFunc.model_to_dict(user)
     if user:
-        return jsonify({'msg': 'success', 'data': user.birthday})
+        return jsonify(user)
     else:
-        return jsonify({'msg': 'fail', 'data': 'Not the user'})    
+        return 'Not Found' 
 
 def addUser():
     openid = request.form.get('openid')
+    if not openid:
+        return 'openid is empty'
     try:
         user = User(openid=openid)
         db.session.add(user)
         db.session.commit()
     except:
-        return jsonify({'msg': 'fail', 'data': 'database error when add'})
-    return jsonify({'msg': 'success', 'data': 'add success'})
+        return 'fail'
+    return openid
+
+def update(openid):
+    field = request.form.get('field')
+    data = request.form.get('data')
+    if not openid:
+        return 'openid is empty'
+    if not field:
+        return 'field is empty'
+
+    user = User.query.field(User.openid == openid).all()
+    try:
+        user.update({field, data})
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        return 'fail'
+    return 'success'
 
 def wxLogin():
     code = request.form.get('code')
@@ -28,5 +48,5 @@ def wxLogin():
     APPID = ''
     SECRET = ''
     wxLoginResult = requests.get('https://api.weixin.qq.com/sns/jscode2session?appid={}&secret={}}&js_code={}}&grant_type=authorization_code'.format(APPID, SECRET, code))
-    return jsonify({'msg': 'success', 'data': wxLoginResult})
+    return jsonify(wxLoginResult.json)
 

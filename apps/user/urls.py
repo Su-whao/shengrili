@@ -3,9 +3,14 @@ from apps.user import view
 
 user = Blueprint('user', __name__)
 
-@user.route('/', methods=['GET', 'POST'])
+
+@user.route('/', methods=['POST'])
 def root():
+    return view.addUser()
+
+@user('/<openid>', methods=['GET', 'POST'])
+def  userinfo(openid):
     if request.method == 'GET':
-        return view.getUser()
+        return view.getUser(openid)
     else:
-        return view.addUser()
+        return view.update(openud)
