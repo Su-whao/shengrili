@@ -9,3 +9,8 @@ def root():
         return view.getBirthdays()
     else:
         return view.addBirthday()
+
+@birthday.route('/distance')
+def distance():
+    if request.methods == 'GET':
+        return view.getDistance()

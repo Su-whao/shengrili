@@ -2,6 +2,7 @@ from flask import request, jsonify
 import datetime
 from db import db
 from models import Birthday, User
+from lib.birthday import birthCalculation
 
 import json
 
@@ -10,7 +11,15 @@ def getBirthdays():
     user = User.query.filter(User.openid == openid).first()
     if user:
         birthdays = user.birthday_records.all()
-        birthdays = [{'remarkName': b.remark_name, 'birthday': b.date.strftime('%Y-%m-%d'), 'describe': b.describe} for b in birthdays]
+        birthdays = [
+            {
+                'remarkName': b.remark_name, 
+                'birthday': b.date.strftime('%Y-%m-%d'), 
+                'describe': b.describe, 
+                'distance': birthCalculation.calculationBirthdayDistance(b.date) 
+            } 
+            for b in birthdays
+        ]
         return jsonify({'msg': 'success', 'data': birthdays})
     else:
         return jsonify({'msg': 'fail', 'data': 'Not the user'})
