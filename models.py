@@ -8,7 +8,6 @@ class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.String(30), primary_key=True, default=lambda: 'u_'+shortuuid.uuid())
     openid = db.Column(db.String(50), nullable=False, unique=True, index=True)
-    birthday = db.Column(db.Date)
     gender = db.Column(db.Integer, default=0)
     status = db.Column(db.Integer, default=0)
     remindWay = db.Column(db.String(20), default='[false, false]')
