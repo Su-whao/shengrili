@@ -29,6 +29,9 @@ def addBirthday():
     remarkName = request.form.get('remarkName', None)
     describe = request.form.get('describe', None)
     date = request.form.get('date')
+    remark = request.form.get('remark', None)
+    relation = int(request.form.get('relation', 0))
+
 
     if not date:
         return jsonify({'msg': 'fail', 'data': 'Not input date'})
@@ -38,7 +41,14 @@ def addBirthday():
     except:
         return jsonify({'msg': 'fail', 'data': 'date parm error'})
     try:
-        birthday = Birthday(recorder_openid=openid, remark_name=remarkName, describe=describe, date=date)
+        birthday = Birthday(
+            recorder_openid=openid, 
+            remark_name=remarkName, 
+            describe=describe, 
+            date=date,
+            remark=remark,
+            relation=relation
+        )
         db.session.add(birthday)
         db.session.commit()
     except Exception as e:

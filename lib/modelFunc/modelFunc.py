@@ -15,3 +15,4 @@ def model_to_dict(result):
     except BaseException as e:
         print(e.args)
         raise TypeError('Type error of parameter')
+        return None

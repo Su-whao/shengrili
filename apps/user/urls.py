@@ -13,4 +13,4 @@ def  userinfo(openid):
     if request.method == 'GET':
         return view.getUser(openid)
     else:
-        return view.update(openud)
+        return view.update(openid)

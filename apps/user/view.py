@@ -3,11 +3,24 @@ from models import User, Birthday
 from db import db
 from lib.modelFunc import modelFunc
 import requests
+import json
 
 def getUser(openid):
     user = User.query.filter(User.openid == openid).first()
     user = modelFunc.model_to_dict(user)
     if user:
+        try:
+            user['birthday'] = {'year': user['birthday'].year, 'month': user['birthday'].month, 'day': user['birthday'].day} \
+                    if user['birthday'] \
+                    else {'year': '', 'month': '', 'day': ''}
+            user['remindWay'] = json.loads(user['remindWay'])
+            user['region'] = json.loads(user['region'])
+            user['registerData'] = {'year': user['create_time'].year, 'month': user['create_time'].month, 'day': user['create_time'].day}
+            del user['modify_time']
+            del user['create_time']
+        except Exception as e:
+            print(e)
+            return 'fail'
         return jsonify(user)
     else:
         return 'Not Found' 
@@ -32,9 +45,9 @@ def update(openid):
     if not field:
         return 'field is empty'
 
-    user = User.query.field(User.openid == openid).all()
+    user = User.query.filter(User.openid == openid)
     try:
-        user.update({field, data})
+        user.update({field: data})
         db.session.commit()
     except Exception as e:
         print(e)
