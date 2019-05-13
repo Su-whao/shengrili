@@ -8,8 +8,12 @@ user = Blueprint('user', __name__)
 def root():
     return view.addUser()
 
+@user.route('/login', methods=['POST'])
+def wxLogin():
+    return view.wxLogin()
+
 @user.route('/<openid>', methods=['GET', 'POST'])
-def  userinfo(openid):
+def userinfo(openid):
     if request.method == 'GET':
         return view.getUser(openid)
     else:

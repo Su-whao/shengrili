@@ -90,3 +90,18 @@ def update(openid, bid):
         print(e)
         return jsonify({'msg': 'fail', 'data': 'db commit error'})
     return jsonify({'msg': 'success', 'data': 'update {} to {} success'.format(field, data)})
+
+def delete(openid, bid):
+    if not ( openid and bid ):
+        return jsonify({'msg': 'fail', 'data': 'openid or bid is empty'})
+    birthdays = User.query.filter(User.openid == openid).first().birthday_records
+    for b in birthdays:
+        if b.id == bid:
+            try:
+                db.session.delete(b)
+                db.session.commit()
+            except Exception as e:
+                print(e)
+                return jsonify({'msg': 'fail', 'data': 'db commit error'})
+            return jsonify({'msg': 'success', 'data': 'success'})
+    return jsonify({'msg': 'fail', 'data': 'Not found the birthday record'})

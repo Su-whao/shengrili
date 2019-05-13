@@ -10,6 +10,9 @@ def root(openid):
     else:		
         return view.addBirthday(openid)
 
-@birthday.route('/<openid>/<bid>', methods=['POST'])
-def update(openid, bid):
-	return view.update(openid, bid)
+@birthday.route('/<openid>/<bid>', methods=['POST', 'DELETE'])
+def option(openid, bid):
+	if request.method == 'POST':
+		return view.update(openid, bid)
+	else:
+		return view.delete(openid, bid)
