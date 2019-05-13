@@ -14,22 +14,23 @@ def getBirthdays():
         birthdays = [
             {
                 'remarkName': b.remark_name, 
-                'birthday': b.date.strftime('%Y-%m-%d'), 
-                'describe': b.describe, 
-                'distance': birthCalculation.calculationBirthdayDistance(b.date) 
+                'date': {'year': b.date.year, 'monty': b.date.month, 'day': b.date.day}
+                'remark': b.remark, 
+                'distance': birthCalculation.calculationBirthdayDistance(b.date),
+                'relation': b.relation,
+                'createTime': b.create_time.strftime('%Y-%m-%d'), 
             } 
             for b in birthdays
         ]
-        return jsonify({'msg': 'success', 'data': birthdays})
+        return jsonify( birthdays)
     else:
         return jsonify({'msg': 'fail', 'data': 'Not the user'})
 
 def addBirthday():
     openid = request.args.get('openid')
     remarkName = request.form.get('remarkName', None)
-    describe = request.form.get('describe', None)
-    date = request.form.get('date')
     remark = request.form.get('remark', None)
+    date = request.form.get('date')
     relation = int(request.form.get('relation', 0))
 
 
@@ -44,7 +45,7 @@ def addBirthday():
         birthday = Birthday(
             recorder_openid=openid, 
             remark_name=remarkName, 
-            describe=describe, 
+            remark=remrak, 
             date=date,
             remark=remark,
             relation=relation
