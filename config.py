@@ -5,8 +5,8 @@ from datetime import timedelta
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = 'wanghao'
-HOST = 'localhost'
+PASSWORD = 'Wanghao97'
+HOST = '123.206.65.183'
 PORT = '3306'
 DATABASE = 'shengrili'
 
