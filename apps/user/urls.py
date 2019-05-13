@@ -8,7 +8,7 @@ user = Blueprint('user', __name__)
 def root():
     return view.addUser()
 
-@user('/<openid>', methods=['GET', 'POST'])
+@user.route('/<openid>', methods=['GET', 'POST'])
 def  userinfo(openid):
     if request.method == 'GET':
         return view.getUser(openid)
