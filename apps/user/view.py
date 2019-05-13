@@ -10,9 +10,6 @@ def getUser(openid):
     user = modelFunc.model_to_dict(user)
     if user:
         try:
-            user['birthday'] = {'year': user['birthday'].year, 'month': user['birthday'].month, 'day': user['birthday'].day} \
-                    if user['birthday'] \
-                    else {'year': '', 'month': '', 'day': ''}
             user['remindWay'] = json.loads(user['remindWay'])
             user['region'] = json.loads(user['region'])
             user['registerData'] = {'year': user['create_time'].year, 'month': user['create_time'].month, 'day': user['create_time'].day}

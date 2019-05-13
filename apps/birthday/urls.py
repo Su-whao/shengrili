@@ -3,14 +3,13 @@ from apps.birthday import view
 
 birthday = Blueprint('birthday', __name__)
 
-@birthday.route('/', methods=['GET', 'POST'])
-def root():
+@birthday.route('/<openid>', methods=['GET', 'POST'])
+def root(openid):
     if request.method == 'GET':
-        return view.getBirthdays()
-    else:
-        return view.addBirthday()
+	    return view.getBirthdays(openid)
+    else:		
+        return view.addBirthday(openid)
 
-@birthday.route('/distance')
-def distance():
-    if request.methods == 'GET':
-        return view.getDistance()
+@birthday.route('/<openid>/<bid>', methods=['POST'])
+def update(openid, bid):
+	return view.update(openid, bid)
