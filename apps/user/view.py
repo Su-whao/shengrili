@@ -20,30 +20,30 @@ def getUser(openid):
             del user['create_time']
         except Exception as e:
             print(e)
-            return 'fail'
+            return jsonify({'msg': 'fail', 'data': 'db commit error'})
         return jsonify(user)
     else:
-        return 'Not Found' 
+        return jsonify({'msg': 'fail', 'data': 'Not the user'})
 
 def addUser():
     openid = request.form.get('openid')
     if not openid:
-        return 'openid is empty'
+        return jsonify({'msg': 'fail', 'data': 'openid is empty'})
     try:
         user = User(openid=openid)
         db.session.add(user)
         db.session.commit()
     except:
-        return 'fail'
+        return jsonify({'msg': 'fail', 'data': 'db commit error'})
     return openid
 
 def update(openid):
     field = request.form.get('field')
     data = request.form.get('data')
     if not openid:
-        return 'openid is empty'
+        return jsonify({'msg': 'fail', 'data': 'openid is empty'})
     if not field:
-        return 'field is empty'
+        return jsonify({'msg': 'fail', 'data': 'field is empty'})
 
     user = User.query.filter(User.openid == openid)
     try:
@@ -51,8 +51,8 @@ def update(openid):
         db.session.commit()
     except Exception as e:
         print(e)
-        return 'fail'
-    return 'success'
+        return jsonify({'msg': 'fail', 'data': 'db commit error'})
+    return jsonify({'msg': 'success', 'data': 'update {} to {} success'.format(field, data)})
 
 def wxLogin():
     code = request.form.get('code')
